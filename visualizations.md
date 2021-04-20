@@ -1,6 +1,6 @@
-# Visualizations with MATPLOTLIB
+# Visualizations
 
-## Introduction
+## MATPLOTLIB - Introduction
 
 `pyplot` is the major object-oriented interface  
 
@@ -32,7 +32,7 @@ Multiple small plots that show similar data.
 * Access plots by indexing the axes object (`ax[2, 1]`)
   * single column grids can be accessed with row only (`ax[0]`)
 
-## Timeseries data
+### Timeseries data
 
 * Set Dataframe index to timeseries column to make plotting by index easier
 
@@ -70,9 +70,9 @@ plt.show()
 ax.annotate(">1 degree", xy=(pd.Timestamp('2015-10-06'), 1), xytext=(pd.Timestamp('2008-10-06'), -0.2),arrowprops={'arrowstyle': "->", "color":"gray"})
 ```
 
-## Quantitative comparisons  
+### Quantitative comparisons  
 
-### Bar-charts  
+#### Bar-charts  
 
 [Bar-charts](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.bar.html) show the value of a variable in different conditions.  
 
@@ -89,7 +89,7 @@ ax.set_xticklabels(medals.index, rotation=90)
 ax.set_ylabel("Number of medals")
 ```
 
-#### Stacked bar charts
+##### Stacked bar charts
 
 * add a label to produce a legend
 * Define stacks with key word `bottom`
@@ -105,7 +105,7 @@ ax.bar(medals.index, medals['Silver'], bottom=medals['Gold'], label='Silver')
 ax.bar(medals.index, medals['Bronze'], bottom=medals['Gold'] + medals['Silver'], label='Bronze')
 ```
 
-### Histograms
+#### Histograms
 
 [Histograms](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.hist.html) show the distribution of values within a variable.  
 
@@ -128,11 +128,11 @@ ax.legend()
 plt.show()
 ```
 
-## Statistical plotting
+### Statistical plotting
 
 Statistical plotting is a set of methods for using visualization to make comparisons.  
 
-### Add error bars  
+#### Add error bars  
 
 Error bars summarize the distribution of the data in one number, such as the standard deviation of the values.  
 
@@ -148,7 +148,7 @@ ax.bar('Rowing', mens_rowing['Height'].mean(), yerr=mens_rowing['Height'].std())
 ax.errorbar(seattle_weather['Month'], seattle_weather['MLY-TAVG-NORMAL'], yerr=seattle_weather['MLY-TAVG-STDDEV'])
 ```
 
-### Boxplots
+#### Boxplots
 
 * Use `ax.boxplot` method. Labels are set with a list using `ax.set_xticklabels`
 
@@ -157,11 +157,11 @@ ax.boxplot([mens_rowing['Height'], mens_gymnastics['Height']])
 ax.set_xticklabels(['Rowing', 'Gymnastics'])
 ```
 
-## Quantitative comarpisons  
+### Quantitative comarpisons  
 
 Bi-variate comparison compares the values of two different variables.  
 
-### Scatter plots
+#### Scatter plots
 
 * For two variables, use `ax.scatter` method and set labels.  
 
@@ -182,17 +182,203 @@ ax.set_ylabel('Relative temperature (C)')
 ax.scatter(climate_change['co2'], climate_change['relative_temp'], c=climate_change.['date'])
 ```
 
-## Sharing figures  
+### Sharing figures  
 
-### Change style
+#### Change style
 
 * See https://matplotlib.org/stable/gallery/#style-sheets
 * `plt.style.use(<style>)` changes the style for the session.  
 * `plt.style.use('default')` resets the style to default.  
 
-### Saving visualizations  
+#### Saving visualizations  
 
 Replace `plt.show()` with `fig.savefig()`
 
 * Control quality with the `quality` & `dpi` arguments  
 * Control size with `fig.set_size_inches([5, 3])`  
+
+## Seaborn - Introduction
+
+### Using pandas with seaborn
+
+* Requires "tidy data"
+* pass DataFrame to `data` argument
+* use column name for arguments such as `x`, `y` & `hue`
+
+### Visualizing two quantitative variables  
+
+Many questions in data science are centered around describing the relationship between two quantitative variables. Seaborn calls plots that visualize this relationship "relational plots".  
+
+#### Scatterplots
+
+Use when each point is assumed to be an independent observation.
+
+* Visualize subgroups in a simple relational plot with `hue`
+* Plot subgroups as small multiples with `sns.relplot()`  
+  * ["relplot()"](https://seaborn.pydata.org/generated/seaborn.relplot.html) plots quantitative data using scatterplots or lineplots
+* Add additional dimensions with `row` & `col` arguments
+
+```python
+sns.relplot(x="G1", y="G3", 
+            data=student_data,
+            kind="scatter", 
+            col="schoolsup",
+            col_order=["yes", "no"],
+            row='famsup', row_order=['yes','no'])
+```
+
+* Customize point size, style & hue to highlight categories
+
+```python
+sns.relplot(x="horsepower", y="mpg", data=mpg, 
+            kind="scatter", size='cylinders', hue="cylinders")
+sns.relplot(x='acceleration', y='mpg', data=mpg, 
+            kind='scatter', style='origin', hue='origin')
+```
+
+* Customize transparancy to make clusters of points more visible
+  
+```python
+sns.relplot(x='total_bill', y='tip', data=tips, 
+            kind='scatter', alpha=0.4)
+```
+
+#### Lineplots
+
+Use when tracking the same variable over time.  
+
+* Customize point style & hue to highlight categories  
+
+```python
+sns.relplot(x='hour', y='NO_2_mean', data=df, kind='line',
+            style='location', hue='location')
+
+# add markers to show datapoints
+sns.relplot(x='hour', y='NO_2_mean', data=df, kind='line',
+            style='location', hue='location', markers=True)
+
+# turn off linestyle variations and keep marker variations
+sns.relplot(x='hour', y='NO_2_mean', data=df, kind='line',
+            style='location', hue='location', 
+            markers=True, dashes=False)
+```
+
+* Lineplots with multiple observations per x-value aggregate using mean and show a confidence interval
+  * Alter behavior with arguments
+
+### Visualizing a categorical and a quantitative variable
+
+Categorical plots involve a categorical variable, which is a variable that consists of a fixed, typically small number of possible values, or categories. These types of plots are commonly used when we want to make comparisons between different groups. `catplot()` is analagous to `relplot()`
+
+#### Count plots and bar plots
+
+**Count plots** show the sum of observations by categories.
+**Bar plots** show the mean of a quantitative variable among observations in each category.
+
+* To change the order of the categories, create a list of category values in the order that you want them to appear, and then use the "order" parameter.  
+* change the orientation of the bars in bar plots and count plots by switching the x and y parameters.
+
+```python
+cat_order = ["<2 hours", 
+            "2 to 5 hours", 
+            "5 to 10 hours", 
+            ">10 hours"]
+sns.catplot(x="study_time", y="G3", data=student_data,
+            kind="bar", order=cat_order)
+```
+
+#### Box plots
+
+Shows the distribution of quantitative data
+
+```python
+sns.catplot(x="romantic", y="G3",
+            data=student_data,
+            kind="box")
+```
+
+#### Point plots
+
+Point plots show the mean of a quantitative variable for the observations in each category, plotted as a single point.
+
+* Shows same informtion as bar plots
+* Use point plots to directly compare subgroups among categories
+
+```python
+sns.catplot(x="famrel", y="absences",
+            data=student_data,
+            kind="point",
+            capsize=0.2, join=False)
+
+# use median instead of mean
+from numpy import median
+sns.catplot(x="famrel", y="absences",
+            data=student_data,
+            kind="point",
+            capsize=0.2, join=False,
+            estimator=median)
+```
+
+### Customizing seaborn plots
+
+#### Customizing figure style
+
+* Change figure style for the session using `sns.set_style()`
+* Reset figure style with `sns.set_style('white')`
+* "white", "dark", "whitegrid", "darkgrid", and "ticks"
+* Use "grid" variants to highlight the specific values of plotted points instead of the overall plot
+* "ticks" adds tick marks to x and y axes
+
+#### Customizing palette
+
+* Change plot colors globally with `sns.set_palette()`
+* **Diverging palettes** are good to use if your visualization deals with a scale where the two ends of the scale are opposites and there is a neutral midpoint.  
+  * "RdBu", "PRGn", "RdBu_r", "PRGn_r"
+* **Sequential palettes** are good for emphasizing a variable on a continuous scale. 
+  * "Greys", "Blues", "PuRd", "GnBu"
+* Create custom palettes by passing in a list of color names or hex codes.
+
+#### Customizing size
+
+* Change the scale of your plot by using `sns.set_context()`. 
+* Default scale is "paper"
+* The scale options from smallest to largest are "paper", "notebook", "talk", and "poster".  
+
+#### Adding titles and labels
+
+* Seaborn plots create two different types of objects: `FacetGrid` and `AxesSubplot`
+* "relplot()" and "catplot()" both support making subplots and return `FacetGrid` objects. 
+* Single-type plot functions like `scatterplot()` and `countplot()` return a single `AxesSubplot` object.
+* Find type by assigning plot to a variable and then `type()` the variable
+
+##### `FacetGrid` titles and labels
+
+```python
+g = sns.catplot(<stuff>)
+g.fig.suptitle("Title")
+
+# Move title up
+g.fig.suptitle('Title', y=1.03)
+
+# Alter subplot titles
+g.set_titles("This is {col_name}")
+
+# Add axis labels
+g.set(xlabel="New X label", ylabel="New Y label")
+
+# Rotate x-axis tick labels
+plt.xticks(rotation=90)
+```
+
+##### `AxesSubplot` titles and labels
+
+```python
+g = sns.boxplot(<stuff>)
+g.set_title('title', y=1.03)
+
+# Add axis labels
+g.set(xlabel="New X label", ylabel="New Y label")
+
+# Rotate x-axis tick labels
+plt.xticks(rotation=90)
+```
