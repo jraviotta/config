@@ -8,6 +8,10 @@
 * pass DataFrame to `data` argument
 * use column name for arguments such as `x`, `y` & `hue`
 
+### Univariate analysis
+
+The [`distplot()`](https://seaborn.pydata.org/generated/seaborn.displot.html#seaborn.displot) function is the best place to start when trying to do distribution analysis with Seaborn.
+
 ### Visualizing two quantitative variables  
 
 Many questions in data science are centered around describing the relationship between two quantitative variables. Seaborn calls plots that visualize this relationship "relational plots".  
@@ -72,21 +76,45 @@ sns.relplot(x='hour', y='NO_2_mean', data=df, kind='line',
 
 Shows data and a regression model
 
-* [`lmplot()`](https://seaborn.pydata.org/generated/seaborn.lmplot.html) combines regplot() and FacetGrid. It is intended as a convenient interface to fit regression models across conditional subsets of a dataset.
+* [`lmplot()`](https://seaborn.pydata.org/generated/seaborn.lmplot.html) combines `regplot()` and `FacetGrid`. It is intended as a convenient interface to fit regression models across conditional subsets of a dataset.
+* When both variables are categorical use `logistic=True`
+* Reduce computational overhead by removing confidence intervals with `ci=False`
 
 ```python
 sns.lmplot(x='quality', y='alcohol', data=df, col='type')
 ```
 
-### Visualizing a categorical and a quantitative variable
+* If a value greater than 1 is passed to the `order` parameter of `regplot()`, then Seaborn will attempt a polynomial fit using underlying NumPy functions.
+* Using an `x_estimator` can be useful for highlighting trends. Eg. `np.mean`
+* `x_bins` divides the data into discrete bins for plotting but the model is fit against all the data.
+* `residplot()` shows the fit of the regression model. The residual values in the plot should be plotted randomly across the horizontal line. This also works for polynomial functions.
+
+### Visualizing categorical variables
 
 Categorical plots involve a categorical variable, which is a variable that consists of a fixed, typically small number of possible values, or categories. These types of plots are commonly used when we want to make comparisons between different groups. `catplot()` is analagous to `relplot()`
 
+* `stripplot()` and `swarmplot()` show all the individual observations on the plot. 
+* [`boxplot()`](https://seaborn.pydata.org/generated/seaborn.boxplot.html), [`violinplot()`](https://seaborn.pydata.org/generated/seaborn.violinplot.html) and `boxenplot()` show an abstract representation of categorical data.
+  * Box plots are compact and do not show the shape of the distribution
+  * Violin plots show the shape of the distribution but are resource intensive
+  * Boxen plots also show the shape of the distribution and are less resource intensive
+
+```python
+# violin plot
+sns.catplot(kind='violin', y ='monthly_claims', x='dead', data=data, cut=0)
+```
+
+### Visualizing a categorical and a quantitative variable
+
 #### Count plots and bar plots
 
-**Count plots** show the sum of observations by categories.
-**Bar plots** show the mean of a quantitative variable among observations in each category.
+`countplot()`, `barplot()` and `pointplot()` show useful summaries of data.
 
+* **Count plots** show the sum of observations by categories.
+* **Bar plots** show the mean of a quantitative variable among observations in each category.
+* **Point plots** show the mean of a quantitative variable for the observations in each category, plotted as a single point.
+  * Shows same informtion as bar plots
+  * Use point plots to directly compare subgroups among categories
 * To change the order of the categories, create a list of category values in the order that you want them to appear, and then use the "order" parameter.  
 * change the orientation of the bars in bar plots and count plots by switching the x and y parameters.
 
@@ -97,36 +125,8 @@ cat_order = ["<2 hours",
             ">10 hours"]
 sns.catplot(x="study_time", y="G3", data=student_data,
             kind="bar", order=cat_order)
-```
 
-#### Histograms, Box plots & Violin plots
-
-* [Histograms](https://seaborn.pydata.org/generated/seaborn.displot.html#seaborn.displot), [box plots](https://seaborn.pydata.org/generated/seaborn.boxplot.html) & [violin plots](https://seaborn.pydata.org/generated/seaborn.violinplot.html) all show the distribution of quantitative data
-* Box plots are compact and do not show the shape of the distribution
-* Violin plots show the shape of the distribution
-* Histograms allow binning
-
-```python
-# box plot
-sns.catplot(x="romantic", y="G3",
-            data=student_data,
-            kind="box")
-
-# violin plot
-sns.catplot(kind='violin', y ='monthly_claims', x='dead', data=data, cut=0)
-
-# histogram
-sns.displot(data, x='last_day', hue='dead', element='step')
-```
-
-#### Point plots
-
-Point plots show the mean of a quantitative variable for the observations in each category, plotted as a single point.
-
-* Shows same informtion as bar plots
-* Use point plots to directly compare subgroups among categories
-
-```python
+# point plot
 sns.catplot(x="famrel", y="absences",
             data=student_data,
             kind="point",
@@ -140,6 +140,95 @@ sns.catplot(x="famrel", y="absences",
             capsize=0.2, join=False,
             estimator=median)
 ```
+
+### Visualizing a matrix
+
+* The `heatmap()` function expects the data to be in a matrix.
+* The `crosstab()` function builds a table to summarize the data by the day and month. In this example, we also use the aggfunc argument to get the average number of rentals for each of the day and month combinations.
+
+```python
+sns.heatmap(pd.crosstab(df['mnth'], df['weekday'], values=df['total_rentals'], aggfunc='mean'))
+
+# Show correlations
+sns.heatmap(df.corr(), annot=True, fmt=".2f")
+```
+
+### Pairwise comparisons
+
+The `PairGrid` and `pairplot` are similar to `FacetGrid`, `factorplot`, and `lmplots` but we only define the columns of data we want to compare.
+
+```python
+# Create a PairGrid with a scatter plot and histogram for fatal_collisions and premiums
+g = sns.PairGrid(df, vars=["fatal_collisions", "premiums"])
+g2 = g.map_diag(plt.hist)
+g3 = g2.map_offdiag(plt.scatter)
+plt.show()
+
+sns.pairplot(data=df,
+        vars=["fatal_collisions", "premiums"],
+        kind='scatter',
+        hue='Region',
+        palette='RdBu',
+        diag_kws={'alpha':.5})
+plt.show()
+
+# specify relationships
+sns.pairplot(data=df,
+        x_vars=["fatal_collisions_speeding", "fatal_collisions_alc"],
+        y_vars=['premiums', 'insurance_losses'],
+        kind='scatter',
+        hue='Region',
+        palette='husl')
+
+plt.show()
+
+# specify plots
+sns.pairplot(data=df,
+             vars=["insurance_losses", "premiums"],
+             kind='reg',
+             palette='BrBG',
+             diag_kind = 'kde',
+             hue='Region')
+
+plt.show()
+```
+
+The `JointGrid` and `jointplot()` allow us to compare the distribution of data between two variables. The center of the plot contains a scatter plot of two variables. The plots along the x and y-axis show the distribution of the data for each variable. This plot can be configured by specifying the type of joint plots as well as the marginal plots. The `jointplot()` is easier to use but provides fewer customizations.
+
+```python
+# Build a JointGrid comparing humidity and total_rentals
+sns.set_style("whitegrid")
+g = sns.JointGrid(x="hum",
+            y="total_rentals",
+            data=df,
+            xlim=(0.1, 1.0)) 
+
+g.plot(sns.regplot, sns.distplot)
+
+plt.show()
+
+# Plot temp vs. total_rentals as a regression plot
+sns.jointplot(x="temp",
+         y="total_rentals",
+         kind='reg',
+         data=df,
+         order=2,
+         xlim=(0, 1))
+
+plt.show()
+
+# Create a jointplot of temp vs. casual riders
+# Include a kdeplot over the scatter plot
+g = (sns.jointplot(x="temp",
+             y="casual",
+             kind='scatter',
+             data=df,
+             marginal_kws=dict(bins=10, rug=True))
+    .plot_joint(sns.kdeplot))
+    
+plt.show()
+```
+
 
 ### Customizing seaborn plots
 
@@ -171,7 +260,7 @@ sns.palplot(p)
 plt.show()
 ```
 
-#### Displaying palettes
+##### Displaying palettes
 
 ```python
 # display a palette
@@ -270,6 +359,26 @@ g.set(xlabel="New X label", ylabel="New Y label")
 
 # Rotate x-axis tick labels
 plt.xticks(rotation=90)
+```
+
+#### Using matplotlib functions to customize seaborn plots
+
+Sometimes it is helpful to use matplotlib's functions to customize plots. The most important object in this case is matplotlib's axes.
+
+```python
+# Create a plot with 1 row and 2 columns that share the y axis label
+fig, (ax0, ax1) = plt.subplots(nrows=1, ncols=2, sharey=True)
+
+# Plot the distribution of 1 bedroom apartments on ax0
+sns.distplot(df['fmr_1'], ax=ax0)
+ax0.set(xlabel="1 Bedroom Fair Market Rent", xlim=(100,1500))
+
+# Plot the distribution of 2 bedroom apartments on ax1
+sns.distplot(df['fmr_2'], ax=ax1)
+ax1.set(xlabel="2 Bedroom Fair Market Rent", xlim=(100,1500))
+
+# Display the plot
+plt.show()
 ```
 
 ## MATPLOTLIB - Introduction
