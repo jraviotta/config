@@ -33,7 +33,8 @@ Use `replace()` to normalize strings
 
 [About pandas nan](https://pandas.pydata.org/pandas-docs/stable/user_guide/missing_data.html)  
   
-Use `isna` and `notna` as they end with ‘na’ like the other missing value methods `fillna` and `dropna`. `isna` is an alias of `isnull` and `notna` is an alias of `notnull`. 
+Use `isna` and `notna` as they end with ‘na’ like the other missing value methods `fillna` and `dropna`.  
+`isna` is an alias of `isnull` and `notna` is an alias of `notnull`.  
 
 ## Arithmetic and Comparison Operators vs Methods
 
