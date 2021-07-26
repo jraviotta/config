@@ -2,7 +2,7 @@
 
 ## Merging tables
 
-### Merge a table to itself to itself
+### Merge a table to itself
 
 You might need to merge a table to itself  
 
@@ -38,4 +38,16 @@ An anti-join returns the observations in the left table that do not have a match
 genres_tracks = genres.merge(top_tracks, on='gid', how='left', indicator=True)
 gid_list = genres_tracks.loc[genres_tracks['_merge'] == 'left_only', 'gid']
 non_top_genres = genres[genres['gid'].isin(gid_list)]
+```
+
+
+### Setting a colum based on other columns
+
+* Use `.loc` with condition in row selector and the target column name
+in the columns selector.  
+* Set the value after the `=`  
+
+
+```python
+df.loc[df['col_1']==df['col_2'],'new_col']=True
 ```

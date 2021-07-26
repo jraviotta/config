@@ -26,15 +26,27 @@ Use `read_csv` for all cases. The only difference between these two functions is
 ## Data cleaning
 
 [About pandas dtypes](https://pandas.pydata.org/pandas-docs/stable/user_guide/basics.)  
-Use `convert_dtypes()` to infer dtypes  
-Use `replace()` to normalize strings
+Use `dtype` argument in `pd.read_csv` when possible to assign dtypes to columns  
+Cast integers to `Int64`, a nullable dtype in pandas  
+Use `convert_dtypes()` to convert to new dtypes with `pd.NA`  
+Use `replace()` to normalize strings  
+Drop unncesessary columns with `df.drop(['col1', 'col2', ...], inplace=True, axis=1)`  
+Examine dtypes with `df.info()`  
+Examine basic statistics with `df.describe(include='all')`.  
+Examine counts of values with `df['col'].value_counts()`.  
+Examine subsets of data with DataFrame indexing, `.loc`, or `.query`  
+Select subsets of data using string methods. EG `nba[nba["fran_id"].str.endswith("ers")]`  
+Combining criteria requires parenthases. EG `nba[(nba["pts"] > 100) &(nba["opp_pts"] > 100)]`  
 
-## Checking for missing data
+## Missing data
 
 [About pandas nan](https://pandas.pydata.org/pandas-docs/stable/user_guide/missing_data.html)  
-  
 Use `isna` and `notna` as they end with ‘na’ like the other missing value methods `fillna` and `dropna`.  
-`isna` is an alias of `isnull` and `notna` is an alias of `notnull`.  
+Replace missing values with `pd.NA` when possible.
+Fill na values with `.fillna()`  
+Fill na values with a pandas object `df.fillna(df.mean()["B":"C"])`  
+Drop na values with `.dropna()` (requires axis arg)  
+Approximate na values with `.interpolate()` (use `method` argument for more control)  
 
 ## Arithmetic and Comparison Operators vs Methods
 
