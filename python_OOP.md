@@ -108,8 +108,8 @@ class SavingsAccount(BankAccount):
         # Call the parent's constructor using ClassName.__init__(self, args)
         # You do not have to call the parent's __init__ method
         # but you will probably want to
-        BankAccount.__init__(self, balance)     # <--- self is a SavingsAccount
-                                                #       and also a BankAccount
+        BankAccount.__init__(self, balance) # <--- self is a SavingsAccount
+                                            #       and also a BankAccount
         # added functionality of child class
         self.interest_rate = interest_rate
 
@@ -128,12 +128,12 @@ Child methods inherited from the parent class can be modified
 4. Do something then call the parent's method to finish the task
 
 ```python
-class CheckingAccount(BankAccount):             # <--- Child class
-    def __init__(self, balance, limit):         # <--- New __init__ method
-        BankAccount.__init__(self, content)     # <--- Calls parent's __init__
-        self.limit = limit                      # <--- Adds new attribute
+class CheckingAccount(BankAccount):         # <--- Child class
+    def __init__(self, balance, limit):     # <--- New __init__ method
+        BankAccount.__init__(self, content) # <--- Calls parent's __init__
+        self.limit = limit                  # <--- Adds new attribute
 
-    def deposit(self, amount):                  # <--- Brand new method
+    def deposit(self, amount):              # <--- Brand new method
         self.balance += amount
 
     def withdraw(self, amount, fee=0):          # <--- Overridden method
@@ -167,7 +167,7 @@ Add additional consistency by passing arguments with `*args, **kwargs`. This ins
 # Import pandas as pd
 import pandas as pd
 
-# Define LoggedDF inherited from pd.DataFrame and add the constructor
+# Define LoggedDF inherited from pd.DataFrame and add a constructor
 class LoggedDF(pd.DataFrame):
   
   def __init__(self, *args, **kwargs):
