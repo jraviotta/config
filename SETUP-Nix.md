@@ -9,6 +9,7 @@
   - [Python](#python)
   - [Google Chrome](#google-chrome)
   - [NoMachine](#nomachine)
+  - [VMware Workstation Player](#vmware-workstation-player)
 - [Utilities](#utilities-1)
     - ["pbcopy" & "pbpaste"](#pbcopy--pbpaste)
     - [Enable ssh on host](#enable-ssh-on-host)
@@ -109,6 +110,15 @@ Deselect "share the desktop at server startup" from "Server Status">"Status"
 ```bash
 wget https://download.nomachine.com/download/8.0/Linux/nomachine_8.0.168_2_amd64.deb && \
   sudo dpkg -i nomachine_8.0.168_2_amd64.deb
+```
+
+### VMware Workstation Player
+see <https://linuxize.com/post/how-to-install-vmware-workstation-player-on-ubuntu-20-04/>
+
+```bash
+wget --user-agent="Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0" https://www.vmware.com/go/getplayer-linux && \
+  chmod +x getplayer-linux && \
+  sudo ./getplayer-linux --required --eulas-agreed
 ```
 
 ## Utilities
