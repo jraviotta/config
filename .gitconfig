@@ -1,0 +1,22 @@
+[user]
+	name = Jonathan Raviotta
+	email = jraviotta@gmail.com
+[credential]
+	helper = manager
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
+[url "ssh://git@bitbucket.org/"]
+	insteadOf = https://bitbucket.org/
+[core]
+	editor = code --wait
+[difftool "default-difftool"]
+	cmd = code --wait --diff $LOCAL $REMOTE
+[filter "nbstripout"]
+	clean = \"/usr/bin/python3\" -m nbstripout
+	smudge = cat
+	required = true
+[diff "ipynb"]
+	textconv = \"/usr/bin/python3\" -m nbstripout -t
+[filter "gitignore"]
+	clean = sed '/\"password/d'
+	smudge = cat

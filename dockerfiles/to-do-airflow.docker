@@ -1,0 +1,2 @@
+docker pull puckel/docker-airflow
+docker run -d -p 8080:8080 -v /home/jona/airflow/dags/:/usr/local/airflow/dags --name airflow  puckel/docker-airflow webserver

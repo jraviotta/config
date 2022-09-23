@@ -1,0 +1,7 @@
+docker pull puckel/docker-airflow
+docker run -d -rm -p 8080:8080 -v /home/jona/airflow/dags/:/usr/local/airflow/dags --name airflow  puckel/docker-airflow webserver
+docker run -d -p 8888:8888 \
+    -v /home/jona/:/home/jovyan/work \
+    --name jupyter \
+    jupyter/base-notebook start-notebook.sh \
+    --NotebookApp.certfile=/etc/ssl/certs/notebook.pem

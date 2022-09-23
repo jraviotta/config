@@ -2,22 +2,18 @@
 
 - [Install Ubuntu & configure](#install-ubuntu--configure)
   - [Utilities](#utilities)
-  - [Set zsh to default shell](#set-zsh-to-default-shell)
   - [Snaps](#snaps)
+  - [Set zsh to default shell](#set-zsh-to-default-shell)
+  - [Create "pbcopy" & "pbpaste"](#create-pbcopy--pbpaste)
+  - [Create ssh keys](#create-ssh-keys)
+  - [Enable ssh on host](#enable-ssh-on-host)
 - [Install config](#install-config)
 - [Other software & Configuration](#other-software--configuration)
   - [Python](#python)
   - [Google Chrome](#google-chrome)
   - [NoMachine](#nomachine)
   - [VMware Workstation Player](#vmware-workstation-player)
-- [Utilities](#utilities-1)
-    - ["pbcopy" & "pbpaste"](#pbcopy--pbpaste)
-    - [Enable ssh on host](#enable-ssh-on-host)
-    - [ssh keys](#ssh-keys)
 - [Old](#old)
-  - [Virtualbox](#virtualbox)
-- [Configure jupyter server to start on boot](#configure-jupyter-server-to-start-on-boot)
-  - [.NET](#net)
   - [Install Psycopg from source code](#install-psycopg-from-source-code)
   - [Lando](#lando)
   - [OneDrive sync](#onedrive-sync)
@@ -42,7 +38,9 @@ sudo apt install -q -y \
   curl \
   git-core \
   pandoc \
-  virtualbox-qt 
+  virtualbox-qt \
+  cockpit
+sudo systemctl enable --now cockpit.socket
 ```
 
 ### Snaps
@@ -113,7 +111,7 @@ sudo service ssh restart
 <!-- TODO create install script -->
 ```bash
 git clone git@github.com:jraviotta/config.git ~/Documents/config
-# source ~/.bash/.bashrc
+# 
 ```
 
 ## Other software & Configuration
@@ -148,6 +146,7 @@ wget https://download.nomachine.com/download/8.0/Linux/nomachine_8.0.168_2_amd64
 ```
 
 ### VMware Workstation Player
+
 see <https://linuxize.com/post/how-to-install-vmware-workstation-player-on-ubuntu-20-04/>
 
 ```bash
@@ -155,9 +154,6 @@ wget --user-agent="Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firef
   chmod +x getplayer-linux && \
   sudo ./getplayer-linux --required --eulas-agreed
 ```
-
-
-
 
 ## Old
 

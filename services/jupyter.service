@@ -1,0 +1,14 @@
+Description=Jupyter Notebook
+
+[Service]  
+Type=simple
+PIDFile=/run/jupyter.pid  
+ExecStart=/home/jona/.local/bin/jupyter-notebook --config=/home/jona/.jupyter/jupyter_notebook_config.py
+User=jona      
+Group=jona     
+WorkingDirectory=/home/jona
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
