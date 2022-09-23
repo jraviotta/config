@@ -41,7 +41,6 @@ sudo apt install -q -y \
   zsh \
   curl \
   git-core \
-  chrome-gnome-shell \
   pandoc \
   virtualbox-qt 
 ```
@@ -55,7 +54,7 @@ chsh -s $(which zsh)
 ### Snaps
 
 ```bash
-sudo snap install -y \
+sudo snap install \
   chromium \
   code \
   docker \
