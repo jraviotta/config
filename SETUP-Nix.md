@@ -45,12 +45,6 @@ sudo apt install -q -y \
   virtualbox-qt 
 ```
 
-### Set zsh to default shell
-
-```bash
-chsh -s $(which zsh)
-```
-
 ### Snaps
 
 ```bash
@@ -71,9 +65,52 @@ sudo snap install \
    deja-dup
 ```
 
+### Set zsh to default shell
+
+```bash
+chsh -s $(which zsh)
+```
+
+### Create "pbcopy" & "pbpaste"
+
+```bash
+sudo apt install -y -q xclip
+echo "alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'" >> ~/.zshrc
+echo "alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'" >> ~/.bashrc
+
+```
+
+### Create ssh keys
+
+```bash
+# Create keys
+ssh-keygen -f ~/.ssh/<name_of_key>
+
+# Transfer to server
+ssh-copy-id -i ~/.ssh/<name_of_key> <user@host>
+```
+
+### Enable ssh on host
+
+```bash
+sudo apt update
+sudo apt install -y -q openssh-server
+sudo ufw allow ssh
+
+# Enable password login
+sudo gedit /etc/ssh/sshd_config
+# Update line
+# PasswordAuthentication yes
+
+sudo service ssh restart
+```
+
 ## Install config
 
 <!-- TODO standardize across platforms -->
+<!-- TODO create install script -->
 ```bash
 git clone git@github.com:jraviotta/config.git ~/Documents/config
 # source ~/.bash/.bashrc
@@ -87,11 +124,10 @@ git clone git@github.com:jraviotta/config.git ~/Documents/config
 # install latest default systems versions
 # Python 2.x
 # sudo apt install python
-sudo apt install -y python3
+sudo apt install -y -q python3
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt update
-sudo apt install -y python3.8
-sudo apt install -y python3-pip
+sudo apt install -y -q python3-pip
 ```
 
 ### Google Chrome
@@ -120,90 +156,10 @@ wget --user-agent="Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firef
   sudo ./getplayer-linux --required --eulas-agreed
 ```
 
-## Utilities
 
-#### "pbcopy" & "pbpaste"
 
-```bash
-sudo apt install xclip
-echo "alias pbcopy='xclip -selection clipboard'
- alias pbpaste='xclip -selection clipboard -o'" >> ~/.zshrc
-
-# Add aliases to .bashrc
-alias pbcopy='xclip -selection clipboard'
-alias pbpaste='xclip -selection clipboard -o'
-```
-
-#### Enable ssh on host
-
-```bash
-sudo apt update
-sudo apt install -y openssh-server
-sudo ufw allow ssh
-
-# Enable password login
-sudo gedit /etc/ssh/sshd_config
-# Update line
-# PasswordAuthentication yes
-
-sudo service ssh restart
-```
-
-#### ssh keys
-
-```bash
-# Create keys
-ssh-keygen -f ~/.ssh/<name_of_key>
-
-# Transfer to server
-ssh-copy-id -i ~/.ssh/<name_of_key> <user@host>
-```
 
 ## Old
-
-### Virtualbox
-
-Install from Ubuntu Software
-See also:
-
-- <https://www.virtualbox.org/wiki/Linux_Downloads>  
-- <https://linuxconfig.org/install-virtualbox-on-ubuntu-20-04-focal-fossa-linux>  
-- <https://linuxconfig.org/> virtualbox-extension-pack-installation-on-ubuntu-20-04-focal-fossa-linux  
-
-```bash
-# add key
-wget -qO - https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo apt-key add -
-# add repository
-sudo apt-add-repository "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian focal contrib"
-sudo apt install virtualbox
-```
-
-## Configure jupyter server to start on boot
-
-```bash
-sudo cp ~/.bash/services/jupyter.service /etc/systemd/system
-
-### Start service manually
-sudo systemctl enable jupyter.service
-sudo systemctl daemon-reload
-sudo systemctl restart jupyter.service
-```
-
-### .NET
-
-<https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu>
-
-```bash
-wget <https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb> -O packages-microsoft-prod.deb
-sudo dpkg -i packages-microsoft-prod.deb
-rm packages-microsoft-prod.deb
-
-sudo apt-get update; \
-  sudo apt-get install -y apt-transport-https && \
-  sudo apt-get update && \
-  sudo apt-get install -y aspnetcore-runtime-6.0
-
-```
 
 ### Install Psycopg from source code
 
