@@ -5,26 +5,26 @@ Host triads
   LocalForward localhost:10432 localhost:5432
   IdentityFile ~/.ssh/triads-DL
 
-Host Whopper-remote
+Host whopper-remote
   HostName 24.154.21.216
   User jona
   Port 22
   ForwardX11 yes
-  IdentityFile ~/.ssh/Whopper
+  IdentityFile ~/.ssh/whopper
 
-Host Whopper
+Host whopper
   HostName 192.168.86.199
   User jona
   ForwardX11 yes
-  IdentityFile ~/.ssh/Whopper
+  IdentityFile ~/.ssh/whopper
 
 Host pi-hole
   HostName 192.168.86.20
   User pi
   ForwardX11 yes
-  IdentityFile ~/.ssh/raspberrypi
+  IdentityFile ~/.ssh/pihole
 
 Host github.com
-	HostName github.com
-	User git
-  IdentityFile ~/.ssh/github
+ HostName github.com
+ User git
+ IdentityFile ~/.ssh/github

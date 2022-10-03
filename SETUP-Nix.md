@@ -7,7 +7,7 @@
   - [Create "pbcopy" & "pbpaste"](#create-pbcopy--pbpaste)
   - [Create ssh keys](#create-ssh-keys)
   - [Enable ssh on host](#enable-ssh-on-host)
-- [Install config](#install-config)
+- [Install ~~config~~](#install-config)
 - [Other software & Configuration](#other-software--configuration)
   - [Python](#python)
   - [Docker](#docker)
@@ -98,6 +98,7 @@ sudo apt update
 sudo apt install -y -q openssh-server
 sudo ufw allow ssh
 
+# TODO sed update
 # Enable password login
 sudo gedit /etc/ssh/sshd_config
 # Update line
@@ -106,10 +107,11 @@ sudo gedit /etc/ssh/sshd_config
 sudo service ssh restart
 ```
 
-## Install config
+## Install ~~config~~
 
 <!-- TODO standardize across platforms -->
 <!-- TODO create install script -->
+<!-- TODO Printer https://support.brother.com/g/b/downloadhowto.aspx?c=us&lang=en&prod=mfc9130cw_us&os=128&dlid=dlf006893_000&flang=4&type3=625 -->
 ```bash
 git clone git@github.com:jraviotta/config.git ~/Documents/config
 # 
