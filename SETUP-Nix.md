@@ -10,10 +10,10 @@
 - [Install ~~config~~](#install-config)
 - [Other software & Configuration](#other-software--configuration)
   - [Python](#python)
-  - [Docker](#docker)
   - [Google Chrome](#google-chrome)
   - [NoMachine](#nomachine)
   - [VMware Workstation Player](#vmware-workstation-player)
+  - [Wine](#wine)
 - [Old](#old)
   - [Install Psycopg from source code](#install-psycopg-from-source-code)
   - [Lando](#lando)
@@ -48,16 +48,18 @@ sudo systemctl enable --now cockpit.socket
 
 ```bash
 sudo snap install \
-  chromium \
-  code \
   brave \
+  chromium \
   discord \
+  docker \
+  firefox \
+  flameshot \
+  libbylinux \
+  okular \
   palapeli \
+  simple-scan \
   teams \
   tradingview \
-  libbylinux \
-  simple-scan \
-  okular
  # Special snaps
  sudo snap install --classic -y \
    code \
@@ -131,27 +133,6 @@ sudo apt update
 sudo apt install -y -q python3-pip
 ```
 
-### Docker
-
-see <https://docs.docker.com/engine/install/ubuntu/>
-
-```bash
-sudo apt-get install -y -q \
-    ca-certificates \
-    curl \
-    gnupg \
-    lsb-release
-sudo mkdir -p /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-echo \
-"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-sudo service docker start
-sudo docker run hello-world
-```
-
 ### Google Chrome
 
 ```bash
@@ -177,6 +158,16 @@ see <https://linuxize.com/post/how-to-install-vmware-workstation-player-on-ubunt
 wget --user-agent="Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0" https://www.vmware.com/go/getplayer-linux && \
   chmod +x getplayer-linux && \
   sudo ./getplayer-linux --required --eulas-agreed
+```
+
+### Wine
+
+see <https://linuxhint.com/wine_ubuntu_install_configure/>
+
+```bash
+sudo apt install -y \
+  wine \
+  winetricks
 ```
 
 ## Old
