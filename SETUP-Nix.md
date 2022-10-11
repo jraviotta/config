@@ -12,8 +12,11 @@
   - [Python](#python)
   - [Google Chrome](#google-chrome)
   - [NoMachine](#nomachine)
+  - [Dropbox](#dropbox)
+  - [Zotero](#zotero)
   - [VMware Workstation Player](#vmware-workstation-player)
   - [Wine](#wine)
+  - [Zoom](#zoom)
 - [Old](#old)
   - [Install Psycopg from source code](#install-psycopg-from-source-code)
   - [Lando](#lando)
@@ -150,6 +153,24 @@ wget https://download.nomachine.com/download/8.0/Linux/nomachine_8.0.168_2_amd64
   sudo dpkg -i nomachine_8.0.168_2_amd64.deb
 ```
 
+### Dropbox
+
+see [install](https://www.dropbox.com/install-linux)
+
+### Zotero
+
+see [install](https://www.zotero.org/support/installation)  
+and [plugins](https://www.zotero.org/support/plugins)  
+
+- [Zutilo](https://github.com/wshanks/Zutilo)
+- [Zotfile](http://zotfile.com/)
+
+```bash
+wget -qO- https://raw.githubusercontent.com/retorquere/zotero-deb/master/install.sh | sudo bash
+sudo apt update
+sudo apt install zotero
+```
+
 ### VMware Workstation Player
 
 see <https://linuxize.com/post/how-to-install-vmware-workstation-player-on-ubuntu-20-04/>
@@ -169,6 +190,10 @@ sudo apt install -y \
   wine \
   winetricks
 ```
+
+### Zoom
+
+see <https://support.zoom.us/hc/en-us/articles/204206269-Installing-or-updating-Zoom-on-Linux#h_89c268b4-2a68-4e4c-882f-441e374b87cb>
 
 ## Old
 
