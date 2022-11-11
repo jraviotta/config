@@ -7,8 +7,9 @@
   - [Create "pbcopy" & "pbpaste"](#create-pbcopy--pbpaste)
   - [Create ssh keys](#create-ssh-keys)
   - [Enable ssh on host](#enable-ssh-on-host)
-- [Install ~~config~~](#install-config)
+- [Install config](#install-config)
 - [Other software & Configuration](#other-software--configuration)
+  - [Docker](#docker)
   - [Python](#python)
   - [Google Chrome](#google-chrome)
   - [NoMachine](#nomachine)
@@ -21,9 +22,8 @@
   - [Install Psycopg from source code](#install-psycopg-from-source-code)
   - [Lando](#lando)
   - [OneDrive sync](#onedrive-sync)
-  - [nbstripout](#nbstripout)
+  - [OneDriveGUI](#onedrivegui)
   - [VNC](#vnc)
-    - [Fix scaling](#fix-scaling)
     - [Install services](#install-services)
     - [Uninstall services](#uninstall-services)
 
@@ -112,7 +112,7 @@ sudo gedit /etc/ssh/sshd_config
 sudo service ssh restart
 ```
 
-## Install ~~config~~
+## Install config
 
 <!-- TODO standardize across platforms -->
 <!-- TODO create install script -->
@@ -123,6 +123,20 @@ git clone git@github.com:jraviotta/config.git ~/Documents/config
 ```
 
 ## Other software & Configuration
+
+### Docker
+
+<https://docs.docker.com/engine/install/linux-postinstall/>
+
+```bash
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker
+docker run hello-world
+# Configure Docker to start on boot with systemd
+sudo systemctl enable docker.service
+sudo systemctl enable containerd.service
+```
 
 ### Python
 
@@ -212,18 +226,15 @@ See <https://docs.lando.dev/getting-started/installation.html>
 
 ### OneDrive sync
 
-  [Install](https://github.com/abraunegg/onedrive/blob/master/docs/ubuntu-package-install.md)  
-  [Usage](https://github.com/abraunegg/onedrive/blob/master/docs/advanced-usage.md)  
-  **Be sure to include trailing slash in config** EG. `sync_dir = "~/OneDrive_PittVax/"
+  [Install](https://github.com/abraunegg/onedrive/blob/master/docs/INSTALL.md)  
 
-```bash
-# install
-echo "deb https://download.opensuse.org/repositories/home:/npreining:/debian-ubuntu-onedrive/xUbuntu_20.04/ ./" | sudo tee -a /etc/apt/sources.list
-cd ~/Downloads && wget https://download.opensuse.org/repositories/home:/npreining:/debian-ubuntu-onedrive/xUbuntu_20.04/Release.key
-sudo apt-key add ./Release.key
-sudo apt-get update && sudo apt-get install -y onedrive
+### OneDriveGUI
+
+[Install](https://github.com/bpozdena/OneDriveGUI)
+<!-- TODO backup config file -->
 
 # Create OneDrive dirs and onedrive config dirs
+
 declare -a dirs=( ~/OneDrive ~/OneDrive_PittVax ~/OneDrive_SDOH-PACE-UPMC_Data_Center/Data ~/.config/onedrive ~/.config/onedrive_pittvax ~/.config/onedrive_phrl
 
 for val in ${dirs[@]}; do
@@ -232,22 +243,24 @@ for val in ${dirs[@]}; do
   fi
 done
 
-# Authenticate the client using the specific configuration file:  
+# Authenticate the client using the specific configuration file  
+
 onedrive --confdir="~/.config/onedrive" --synchronize --resync --dry-run
 onedrive --confdir="~/.config/onedrive_phrl" --synchronize --resync --dry-run
 onedrive --confdir="~/.config/onedrive_pittvax" --synchronize --resync --dry-run
 
-
 # install & activate services
+
 for SERVICE in onedrive_phrl.service onedrive_pittvax.service onedrive.service jupyter.service
 do
-if [ ! -e /lib/systemd/system/$SERVICE ]; then 
+if [ ! -e /lib/systemd/system/$SERVICE ]; then
   sudo cp ~/.bash/services/$SERVICE /lib/systemd/system;
 fi
 sudo systemctl start $SERVICE # <--- Start now
 sudo systemctl enable $SERVICE # <--- Start on boot
 systemctl status $SERVICE
 done
+
 ```
 
 ### nbstripout
@@ -270,17 +283,6 @@ Load on startup
 ```bash
 sudo systemctl enable vncserver-x11-serviced.service
 sudo systemctl enable vncserver-virtuald.service
-```
-
-#### Fix scaling
-
-```bash
-sudo apt-get install xvfb xpra x11_server_utils
-sudo wget -O /usr/local/bin/run_scaled "https://raw.githubusercontent.com/kaueraal/run_scaled/master/run_scaled"
-sudo chmod +x /usr/local/bin/run_scaled
-# example
-# run_scaled vncviewer
-
 ```
 
 #### Install services
