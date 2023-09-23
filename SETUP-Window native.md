@@ -29,9 +29,10 @@ $InstallDir=$env:systemdrive + '\ProgramData\chocoportable'; $env:ChocolateyInst
 # Software
 choco install -y chocolateygui
 choco install -y googlechrome
+choco install -y firefox
 choco install -y git
 choco install -y poshgit
-choco install -y firefox
+choco install -y git-credential-manager-for-windows
 choco install -y zoom
 choco install -y zoom-outlook
 choco install -y microsoft-teams.install
@@ -44,7 +45,7 @@ choco install -y docker-desktop
 choco install -y youtube-dl
 choco install -y dbeaver
 choco install -y reaper
-choco install -y git-credential-manager-for-windows
+
 
 # Analysis tools
 
